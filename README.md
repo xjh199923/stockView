@@ -35,17 +35,62 @@
 
 ### 登陆界面
 
-![image-20210101132500720](https://github.com/xjh199923/stockView/tree/master/dataviewWeb/screenshots/login.png)
+![login](./dataviewWeb/screenshots/login.png)
 
 ### 信息展示
 
-![table](https://github.com/xjh199923/stockView/tree/master/dataviewWeb/screenshots/table.png)
+![table](./dataviewWeb/screenshots/table.png)
 
 ## 安装步骤
 
+### clone项目
+
 ```sh
-git clone https://github.com/lin-xin/vue-manage-system.git      // 把模板下载到本地
-cd vue-manage-system    // 进入模板目录
+git clone https://github.com/xjh199923/stockView.git   // 把项目下载到本地
+cd stockView   // 进入项目
+```
+
+### 后端项目安装
+
+#### 数据库配置
+
+将后端backFlask目录文件夹，导入的你的python环境下，之后需要在本地建立名为`stockDatabase`的mysql数据库，并修改config.py中的数据库配置如下：
+
+```python
+# 配置 sqlalchemy  "数据库驱动://数据库用户名:@主机地址:端口/数据库名称"
+SQLALCHEMY_DATABASE_URI = "mysql://数据库用户名:password@localhost:3306/stockDatabase"
+```
+
+#### Flask环境配置：
+
+Python依赖如下：
+
+```
+certifi==2020.12.5
+click==7.1.2
+Flask==1.1.2
+Flask-Cors==3.0.9
+Flask-SQLAlchemy==2.4.4
+itsdangerous==1.1.0
+Jinja2==2.11.2
+MarkupSafe==1.1.1
+PyMySQL==0.10.1
+six==1.15.0
+SQLAlchemy==1.3.22
+Werkzeug==1.0.1
+```
+
+可以利用以下命令安装：
+
+```shell
+pip install -r requirements.txt
+```
+
+依赖安装完成后，运行FlaskDemo.py即可启动后端服务器。
+
+### 前端项目安装
+
+```shell
 npm install         // 安装项目依赖，等待安装完成之后，安装失败可用 cnpm 或 yarn
 
 // 开启服务器，浏览器访问 http://localhost:8080
@@ -54,6 +99,10 @@ npm run serve
 // 执行构建命令，生成的dist文件夹放在服务器下即可访问
 npm run build
 ```
+
+### 数据配置文件
+
+预处理过后的数据以SQL的格式进行保存，mysql运行即可生成相应的数据库。
 
 ## 特别鸣谢
 
