@@ -35,11 +35,11 @@
 
 ### 登陆界面
 
-![image-20210101132500720](/Users/xjh/Library/Application Support/typora-user-images/image-20210101132500720.png)
+![image-20210101132500720](https://github.com/xjh199923/stockView/tree/master/dataviewWeb/screenshots/login.png)
 
 ### 信息展示
 
-![image-20210101133546565](/Users/xjh/Library/Application Support/typora-user-images/image-20210101133546565.png)
+![table](https://github.com/xjh199923/stockView/tree/master/dataviewWeb/screenshots/table.png)
 
 ## 安装步骤
 
