@@ -72,6 +72,42 @@ def stockName():
     nameDic['nameList'] = list(set(nameList))
     nameDic['nameLen'] = len(nameList)
     return jsonify(nameDic)
+#返回深市，沪市分别数目
+@app.route("/stockNum/")
+def stockNum():
+    numDic = {}
+    nameList = []
+    stock = Stock.query.with_entities(Stock.stockNumber).distinct().all()
+    for record in stock:
+        nameList.append(record.stockNumber)
+    szList = [i for i, x in enumerate(nameList) if x.find('sz') != -1]
+    numDic['shNum'] = len(nameList) - len(szList)
+    numDic['szNum'] = len(szList)
+    return jsonify(numDic)
+
+#返回平均成交量前n的的股票代码以及成交量
+
+#返回某一支股票的2016年2017年股票的成交量
+@app.route("/VolumeContrast16_17/<stockCode>/")
+def VolumeContrast16_17(stockCode):
+    stock_16 = Stock.query.filter(Stock.stockNumber == stockCode,Stock.transactionDate.like('%2016%')).all()
+    stock_17 = Stock.query.filter(Stock.stockNumber == stockCode,Stock.transactionDate.like('%2017%')).all()
+    date_16,date_17,volume_16,volume_17 = [],[],[],[]
+    alldata = {}
+    for record in stock_16:
+        date_16.append(record.transactionDate)
+        volume_16.append(record.volume)
+    for item in stock_17:
+        date_17.append(item.transactionDate)
+        volume_17.append(item.volume)
+    alldata['date_16'] = date_16
+    alldata['date_17'] = date_17
+    alldata['volume_16'] = volume_16
+    alldata['volume_17'] = volume_17
+    return jsonify(alldata)
+
+
+
 
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False

@@ -20,11 +20,6 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
-                    path: '/icon',
-                    component: () => import(/* webpackChunkName: "icon" */ '../components/page/Icon.vue'),
-                    meta: { title: '自定义图标' }
-                },
-                {
                     path: '/table',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
                     meta: { title: '基础表格' }
@@ -42,6 +37,12 @@ export default new Router({
                     meta: { title: '成交额成交量', permission: true }
                 },
                 {
+                    // 16_17年成交量对比图
+                    path: '/volumeContrast16_17',
+                    component: () => import(/* webpackChunkName: "permission" */ '../components/page/VolumeContrast16_17.vue'),
+                    meta: { title: '成交量分析', permission: true }
+                },
+                {
                     // 测试
                     path: '/test',
                     component: () => import(/* webpackChunkName: "permission" */ '../components/page/Test.vue'),
@@ -54,9 +55,5 @@ export default new Router({
             component: () => import(/* webpackChunkName: "login" */ '../components/page/Login.vue'),
             meta: { title: '登录' }
         },
-        {
-            path: '*',
-            redirect: '/404'
-        }
     ]
 });

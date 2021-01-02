@@ -35,6 +35,7 @@
                 ref="multipleTable"
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
+                :default-sort = "{prop: 'stockId', order: 'descending'}"
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="stockId" label="ID" align="center"></el-table-column>
@@ -115,6 +116,7 @@ export default {
             idx: -1,
             id: -1,
             options: '',
+            selectCode: ''
         };
     },
     created() {
