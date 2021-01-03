@@ -16,12 +16,12 @@ db.init_app(app)
 
 db.create_all()
 
-#返回某一支股票的所有信息
+# 返回某一支股票的所有信息
 @app.route("/stockInfo/<stockCode>/pageIndex<pageCode>")
 def allInfo(stockCode,pageCode):
     pageCode=int(pageCode)-1
     tmplist =[]
-    allJson = {} #所有信息，包括记录数json
+    allJson = {}  # 所有信息，包括记录数json
     stockInfo = Stock.query.filter_by(stockNumber=stockCode).all()
     stockId = 1
     for record in stockInfo:
@@ -43,7 +43,32 @@ def allInfo(stockCode,pageCode):
     allJson["infoList"] = tmplist[10*pageCode:10*(pageCode+1)]
     return jsonify(allJson)
 
-#返回某一支股票的交易日期，开盘价，收盘价，最高价，最低价
+# @app.route('/')
+# def index():
+#     stockMax = Stock.query.all()
+#
+#
+# def add_data(obj):
+#     try:
+#         db.session.add(obj)
+#         db.session.commit()
+#     except Exception as e:
+#         print(e)
+#         db.session.rollback()
+#         flash("添加失败")
+
+#返回id当前最大值
+@app.route("/curIdmax/")
+def curIdmax():
+    tmpid = db.session.execute(" SELECT max(id) AS maxID FROM stock ").fetchall()
+    tmpdic = {}
+    tmplist = []
+    for i in tmpid:
+        tmplist.append(i.maxID)
+    tmpdic['maxId'] = tmplist[0]
+    return jsonify(tmpdic)
+
+# 返回某一支股票的交易日期，开盘价，收盘价，最高价，最低价
 @app.route("/stock/<stockCode>/")
 def allitem(stockCode):
     tmplist = []
@@ -52,7 +77,7 @@ def allitem(stockCode):
         tmplist.append([record.transactionDate, record.openPrice, record.closePrice,record.highestPrice,record.lowestPrice])
     return jsonify(tmplist)
 
-#返回某一支股票的成交量，成交额
+# 返回某一支股票的成交量，成交额
 @app.route("/stockVolume/<stockCode>/")
 def stockVolume(stockCode):
     stock = Stock.query.filter_by(stockNumber=stockCode).all()
@@ -62,7 +87,7 @@ def stockVolume(stockCode):
     print(records)
     return jsonify(records)
 
-#返回股票总数，以及名称列表
+# 返回股票总数，以及名称列表
 @app.route("/stockName/")
 def stockName():
     nameList = []
@@ -73,7 +98,8 @@ def stockName():
     nameDic['nameList'] = list(set(nameList))
     nameDic['nameLen'] = len(nameList)
     return jsonify(nameDic)
-#返回深市，沪市分别数目
+
+# 返回深市，沪市分别数目
 @app.route("/stockNum/")
 def stockNum():
     numDic = {}
@@ -86,7 +112,7 @@ def stockNum():
     numDic['szNum'] = len(szList)
     return jsonify(numDic)
 
-#返回成交量前n的的股票代码以及成交量信息
+# 返回成交量前n的的股票代码以及成交量信息
 @app.route("/volumeFirstN/<firstn>/")
 def volumeFirstN(firstn):
     tmpNamelist,tmpDatelist,tmpfirstNdata = [],[],[]
@@ -109,7 +135,7 @@ def volumeFirstN(firstn):
     firstNdic['firstNdataList'] = tmpfirstNdata
     return jsonify(firstNdic)
 
-#返回某一支股票的2016年2017年股票的成交量
+# 返回某一支股票的2016年2017年股票的成交量
 @app.route("/VolumeContrast16_17/<stockCode>/")
 def VolumeContrast16_17(stockCode):
     stock_16 = Stock.query.filter(Stock.stockNumber == stockCode,Stock.transactionDate.like('%2016%')).all()

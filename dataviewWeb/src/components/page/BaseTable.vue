@@ -58,6 +58,12 @@
                         >编辑</el-button>
                         <el-button
                             type="text"
+                            icon="el-icon-plus"
+                            class="red"
+                            @click="handleDelete(scope.$index, scope.row)"
+                        >增加</el-button>
+                        <el-button
+                            type="text"
                             icon="el-icon-delete"
                             class="red"
                             @click="handleDelete(scope.$index, scope.row)"
