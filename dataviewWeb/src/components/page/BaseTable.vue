@@ -49,7 +49,7 @@
                 <el-table-column prop="beforeClosePrice" label="前收盘价" align="center"></el-table-column>
                 <el-table-column prop="volume" label="成交量" align="center"></el-table-column>
                 <el-table-column prop="turnover" label="成交额" align="center"></el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column label="操作" width="200" align="center">
                     <template slot-scope="scope">
                         <el-button
                             type="text"
@@ -62,6 +62,11 @@
                             class="red"
                             @click="handleDelete(scope.$index, scope.row)"
                         >删除</el-button>
+                        <el-button
+                            type="text"
+                            icon="el-icon-circle-plus-outline"
+                            @click="handleAdd(scope.$index)"
+                        >添加</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -80,16 +85,59 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="用户名">
-                    <el-input v-model="form.name"></el-input>
+                <el-form-item label="成交量">
+                    <el-input v-model="form.volume"></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                <el-form-item label="成交额">
+                    <el-input v-model="form.turnover"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!-- 添加弹出框 -->
+        <el-dialog title="添加" :visible.sync="addVisible" width="30%">
+            <el-form ref="form" :model="form" label-width="70px">
+                <el-form-item label="股票ID">
+                    <el-input v-model="form.stockId"></el-input>
+                </el-form-item>
+                <el-form-item label="股票名称">
+                    <el-input v-model="form.stockName"></el-input>
+                </el-form-item>
+                <el-form-item label="股票代码">
+                    <el-input v-model="form.stockNumber"></el-input>
+                </el-form-item>
+                <el-form-item label="交易日期">
+                    <el-input v-model="form.atransactionDate"></el-input>
+                </el-form-item>
+                <el-form-item label="开盘价">
+                    <el-input v-model="form.aopenPrice"></el-input>
+                </el-form-item>
+                <el-form-item label="收盘价">
+                    <el-input v-model="form.aclosePrice"></el-input>
+                </el-form-item>
+                <el-form-item label="最高价">
+                    <el-input v-model="form.ahighestPrice"></el-input>
+                </el-form-item>
+                <el-form-item label="最低价">
+                    <el-input v-model="form.alowestPrice"></el-input>
+                </el-form-item>
+                <el-form-item label="前收盘价">
+                    <el-input v-model="form.abeforeClosePrice"></el-input>
+                </el-form-item>
+                <el-form-item label="成交量">
+                    <el-input v-model="form.avolume"></el-input>
+                </el-form-item>
+                <el-form-item label="成交额">
+                    <el-input v-model="form.aturnover"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="addVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveAdd">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -111,12 +159,21 @@ export default {
             multipleSelection: [],
             delList: [],
             editVisible: false,
+            addVisible:false,
             pageTotal: 10,
             form: {},
             idx: -1,
             id: -1,
             options: '',
-            selectCode: ''
+            selectCode: '',
+            atransactionDate: '',
+            aopenPrice: '',
+            aclosePrice: '',
+            ahighestPrice: '',
+            alowestPrice: '',
+            abeforeClosePrice: '',
+            avolume: '',
+            aturnover: ''
         };
     },
     created() {
@@ -152,6 +209,23 @@ export default {
               console.log(error);
           })
         },
+        getIDMax(){
+            // 使用 axios 向 flask 发送请求
+            const url = "http://127.0.0.1:8888/curIdmax/";
+            console.log(url);
+            var tplist = [];
+            axios.get(url).then((res) => {
+                for (var i = 0, len = res.data.tmplist.maxId; i < len; i++) {
+                    var tmpdic = [];
+                    tmpdic['maxId'] = i;
+                    tplist.push(tmpdic);
+                }
+                this.options = tplist;
+            })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
         //得到select选框当前选中
         getSelectValue(value){
             this.stockCode = this.options[this.selectCode].label;
@@ -169,6 +243,32 @@ export default {
                     this.tableData.splice(index, 1);
                 })
                 .catch(() => {});
+        },
+        // 增加操作
+        handleAdd(index) {
+            const list = this.stockCode
+            //list[index].show = 'false'
+            this.addVisible = true;
+            list.push({
+                // ID
+                stockId: '',
+                // 股票名称
+                stockName: '',
+                // 股票代码
+                stockNumber: '',
+                // 交易日期
+                atransactionDate: '',
+                aopenPrice: '',
+                aclosePrice: '',
+                ahighestPrice: '',
+                alowestPrice: '',
+                abeforeClosePrice: '',
+                avolume: '',
+                aturnover: '',
+                // 是否显示新增按钮
+                show: 'true'
+            })
+            this.$set(this.tableData, '', list)
         },
         // 多选操作
         handleSelectionChange(val) {
@@ -194,6 +294,12 @@ export default {
         saveEdit() {
             this.editVisible = false;
             this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+            this.$set(this.tableData, this.idx, this.form);
+        },
+        // 保存添加
+        saveAdd() {
+            this.addVisible = false;
+            this.$message.success(`增加第 ${this.idx + 1} 行成功`);
             this.$set(this.tableData, this.idx, this.form);
         },
         // 分页导航
