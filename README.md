@@ -93,6 +93,8 @@ pip install -r requirements.txt
 ### 前端项目安装
 
 ```shell
+cd  dataviewWeb  //进入前端项目目录 
+
 npm install         // 安装项目依赖，等待安装完成之后，安装失败可用 cnpm 或 yarn
 
 // 开启服务器，浏览器访问 http://localhost:8080

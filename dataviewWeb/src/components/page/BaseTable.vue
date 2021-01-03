@@ -35,7 +35,7 @@
                 ref="multipleTable"
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
-                :default-sort = "{prop: 'stockId', order: 'descending'}"
+                :default-sort = "{prop: 'stockId', order: 'transactionDate'}"
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="stockId" label="ID" align="center"></el-table-column>
@@ -135,7 +135,7 @@ export default {
             });
         },
         getVolumes(){
-          // 使用 axios 向 flask 发送请求
+          // 使用 axios 向 flask 发送请求/curIdmax
           const url = "http://127.0.0.1:8888/stockName/";
           console.log(url);
           var tplist = [];

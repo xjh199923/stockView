@@ -4,7 +4,7 @@
             <el-container style="width:100%;">
                     <el-row :gutter="100">
                         <el-col>
-                            <div id="echartContainer" ref="echartContainer" style="width:1000px; height:580px"></div>
+                            <div id="echartContainer" ref="echartContainer" style="width:1200px; height:580px"></div>
                         </el-col>
                     </el-row> 
             </el-container>
@@ -44,7 +44,7 @@ export default {
                     seriseData.push(tmpdic);
                 }
 
-                var colors = ['#5793f3', '#d14a61', '#675bba'];
+                var colors = ['#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'];
                 var option = {
                 title: {
                     text: '成交量排名前N支股票',
@@ -90,6 +90,7 @@ export default {
                 yAxis: {
                     type: 'value'
                 },
+                // color: colors,
                 series: seriseData
             };       
             var charts = echarts.init(this.$refs.echartContainer);

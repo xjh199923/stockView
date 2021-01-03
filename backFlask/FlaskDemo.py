@@ -16,6 +16,7 @@ db.init_app(app)
 
 db.create_all()
 
+
 #返回某一支股票的所有信息
 @app.route("/stockInfo/<stockCode>/pageIndex<pageCode>")
 def allInfo(stockCode,pageCode):
@@ -128,7 +129,21 @@ def VolumeContrast16_17(stockCode):
     alldata['volume_17'] = volume_17
     return jsonify(alldata)
 
+#返回深市或者沪市的股票成交量，成交额
+# @app.route("/boxplot/")
+# def stockBoxplot():
+#
 
+#返回id当前最大值
+@app.route("/curIdmax/")
+def curIdmax():
+    tmpid = db.session.execute(" SELECT max(id) AS maxID FROM stock ").fetchall()
+    tmpdic = {}
+    tmplist = []
+    for i in tmpid:
+        tmplist.append(i.maxID)
+    tmpdic['maxId'] = tmplist[0]
+    return jsonify(tmpdic)
 
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
