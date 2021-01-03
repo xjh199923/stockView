@@ -1,6 +1,7 @@
 from flask import Flask,jsonify
 from models import *
 from flask_cors import CORS
+from sqlalchemy import func
 
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -85,7 +86,28 @@ def stockNum():
     numDic['szNum'] = len(szList)
     return jsonify(numDic)
 
-#返回平均成交量前n的的股票代码以及成交量
+#返回成交量前n的的股票代码以及成交量信息
+@app.route("/volumeFirstN/<firstn>/")
+def volumeFirstN(firstn):
+    tmpNamelist,tmpDatelist,tmpfirstNdata = [],[],[]
+    stockNumFirstN = db.session.execute('SELECT stockName, AVG(stock.volume) AS allVolume FROM stock \
+    GROUP BY stockName,stockName ORDER BY allVolume DESC LIMIT %s' %firstn).fetchall()
+    for record in stockNumFirstN:
+        tmpNamelist.append(record.stockName)
+    tmpDate = db.session.execute("SELECT transactionDate FROM stock WHERE stockNumber = 'sh600297' ").fetchall()
+    for j in tmpDate:
+        tmpDatelist.append(j.transactionDate)
+    for item in tmpNamelist:
+        tmpData = db.session.execute("SELECT transactionDate,volume FROM stock WHERE stockName = '%s' " %item).fetchall()
+        tmplist = []
+        for i in tmpData:
+            tmplist.append(i.volume)
+        tmpfirstNdata.append(tmplist)
+    firstNdic = {}
+    firstNdic['firstNnameList'] = tmpNamelist
+    firstNdic['firstNdateList'] = tmpDatelist
+    firstNdic['firstNdataList'] = tmpfirstNdata
+    return jsonify(firstNdic)
 
 #返回某一支股票的2016年2017年股票的成交量
 @app.route("/VolumeContrast16_17/<stockCode>/")
@@ -105,7 +127,6 @@ def VolumeContrast16_17(stockCode):
     alldata['volume_16'] = volume_16
     alldata['volume_17'] = volume_17
     return jsonify(alldata)
-
 
 
 

@@ -124,13 +124,17 @@ export default {
                     status: false
                 },
                 {
+                    title: '两年成交量对比分析功能',
+                    status: true
+                },
+                {
+                    title: '成交量排名前N支股票对比分析',
+                    status: true
+                }, 
+                {
                     title: '股票信息成交量对比展示',
                     status: false
                 },
-                {
-                    title: '股票信息成交额对比展示',
-                    status: false
-                }
                 ,
                 {
                     title: '股票信息成交量预测模块',

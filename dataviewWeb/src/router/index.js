@@ -43,6 +43,12 @@ export default new Router({
                     meta: { title: '成交量分析', permission: true }
                 },
                 {
+                    // 平均成交量前n支股票对比图
+                    path: '/volumeFirstN',
+                    component: () => import(/* webpackChunkName: "permission" */ '../components/page/VolumeFirstN.vue'),
+                    meta: { title: '成交量分析', permission: true }
+                },
+                {
                     // 测试
                     path: '/test',
                     component: () => import(/* webpackChunkName: "permission" */ '../components/page/Test.vue'),

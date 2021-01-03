@@ -82,6 +82,11 @@ export default {
                     title: '成交量分析'
                 },
                 {
+                    icon: 'el-icon-lx-cascades',
+                    index: 'volumeFirstN',
+                    title: '成交量前列'
+                },
+                {
                     icon: 'el-icon-lx-global',
                     index: 'test',
                     title: '测试'
