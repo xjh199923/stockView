@@ -26,7 +26,7 @@ export default {
   methods: {
       getMessage() {
         // 使用 axios 向 flask 发送请求
-        const url = "http://127.0.0.1:8888/volumeFirstN/5";
+        const url = "/volumeFirstN/5";
         console.log(url);
         axios.get(url).then((res) => {
                 

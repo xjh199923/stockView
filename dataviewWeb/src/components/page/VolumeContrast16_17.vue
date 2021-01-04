@@ -51,7 +51,7 @@ export default {
   },
   methods: {
       getstockAllnumber(){
-        const url = "http://127.0.0.1:8888/stockName/";
+        const url = "/stockName/";
         axios.get(url).then((res) => {
             var vars = [];
             for(var i=0;i<res.data.nameList.length;i++)
@@ -73,7 +73,7 @@ export default {
       getMessage(id) {
         // 使用 axios 向 flask 发送请求
         var code  = this.codeinput;
-        const url = "http://127.0.0.1:8888/VolumeContrast16_17/"+code;
+        const url = "/VolumeContrast16_17/"+code;
         axios.get(url).then((res) => {
             var date_16 = res.data.date_16;
             var date_17 = res.data.date_17;

@@ -65,7 +65,7 @@
                         <el-button
                             type="text"
                             icon="el-icon-circle-plus-outline"
-                            @click="handleAdd(scope.$index)"
+                            @click="handleAdd(scope.$index, scope.row)"
                         >添加</el-button>
                     </template>
                 </el-table-column>
@@ -102,7 +102,7 @@
         <el-dialog title="添加" :visible.sync="addVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
                 <el-form-item label="股票ID">
-                    <el-input v-model="form.stockId"></el-input>
+                    <el-input v-model="aid"></el-input>
                 </el-form-item>
                 <el-form-item label="股票名称">
                     <el-input v-model="form.stockName"></el-input>
@@ -111,28 +111,28 @@
                     <el-input v-model="form.stockNumber"></el-input>
                 </el-form-item>
                 <el-form-item label="交易日期">
-                    <el-input v-model="form.atransactionDate"></el-input>
+                    <el-input v-model="atransactionDate" placeholder="2016-01-04"></el-input>
                 </el-form-item>
                 <el-form-item label="开盘价">
-                    <el-input v-model="form.aopenPrice"></el-input>
+                    <el-input v-model="aopenPrice"></el-input>
                 </el-form-item>
                 <el-form-item label="收盘价">
-                    <el-input v-model="form.aclosePrice"></el-input>
+                    <el-input v-model="aclosePrice"></el-input>
                 </el-form-item>
                 <el-form-item label="最高价">
-                    <el-input v-model="form.ahighestPrice"></el-input>
+                    <el-input v-model="ahighestPrice"></el-input>
                 </el-form-item>
                 <el-form-item label="最低价">
-                    <el-input v-model="form.alowestPrice"></el-input>
+                    <el-input v-model="alowestPrice"></el-input>
                 </el-form-item>
                 <el-form-item label="前收盘价">
-                    <el-input v-model="form.abeforeClosePrice"></el-input>
+                    <el-input v-model="abeforeClosePrice"></el-input>
                 </el-form-item>
                 <el-form-item label="成交量">
-                    <el-input v-model="form.avolume"></el-input>
+                    <el-input v-model="avolume"></el-input>
                 </el-form-item>
                 <el-form-item label="成交额">
-                    <el-input v-model="form.aturnover"></el-input>
+                    <el-input v-model="aturnover"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -166,6 +166,8 @@ export default {
             id: -1,
             options: '',
             selectCode: '',
+            //需要添加的属性
+            aid: '',
             atransactionDate: '',
             aopenPrice: '',
             aclosePrice: '',
@@ -211,16 +213,9 @@ export default {
         },
         getIDMax(){
             // 使用 axios 向 flask 发送请求
-            const url = "http://127.0.0.1:8888/curIdmax/";
-            console.log(url);
-            var tplist = [];
+            const url = "/curIdmax/";
             axios.get(url).then((res) => {
-                for (var i = 0, len = res.data.tmplist.maxId; i < len; i++) {
-                    var tmpdic = [];
-                    tmpdic['maxId'] = i;
-                    tplist.push(tmpdic);
-                }
-                this.options = tplist;
+                this.aid = res.data.maxId + 1;
             })
                 .catch((error) => {
                     console.log(error);
@@ -244,31 +239,45 @@ export default {
                 })
                 .catch(() => {});
         },
+        postToback(){
+            const url = "http://127.0.0.1:8888/test";
+            let params = {aid: this.aid};
+            var qs = require('qs');
+            axios.post(url,params,{'Content-Type':'application/json'})
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(() => {});
+        },
+        //推送数据到后端
         // 增加操作
-        handleAdd(index) {
+        handleAdd(index,row) {
+            this.idx = index;
+            this.form = row;
             const list = this.stockCode
             //list[index].show = 'false'
             this.addVisible = true;
-            list.push({
-                // ID
-                stockId: '',
-                // 股票名称
-                stockName: '',
-                // 股票代码
-                stockNumber: '',
-                // 交易日期
-                atransactionDate: '',
-                aopenPrice: '',
-                aclosePrice: '',
-                ahighestPrice: '',
-                alowestPrice: '',
-                abeforeClosePrice: '',
-                avolume: '',
-                aturnover: '',
-                // 是否显示新增按钮
-                show: 'true'
-            })
-            this.$set(this.tableData, '', list)
+            this.getIDMax();
+            // list.push({
+            //     // ID
+            //     stockId: '',
+            //     // 股票名称
+            //     stockName: '',
+            //     // 股票代码
+            //     stockNumber: '',
+            //     // 交易日期
+            //     atransactionDate: '',
+            //     aopenPrice: '',
+            //     aclosePrice: '',
+            //     ahighestPrice: '',
+            //     alowestPrice: '',
+            //     abeforeClosePrice: '',
+            //     avolume: '',
+            //     aturnover: '',
+            //     // 是否显示新增按钮
+            //     show: 'true'
+            // })
+            // this.$set(this.tableData, '', list)
         },
         // 多选操作
         handleSelectionChange(val) {
@@ -301,6 +310,7 @@ export default {
             this.addVisible = false;
             this.$message.success(`增加第 ${this.idx + 1} 行成功`);
             this.$set(this.tableData, this.idx, this.form);
+            this.postToback();
         },
         // 分页导航
         handlePageChange(val) {

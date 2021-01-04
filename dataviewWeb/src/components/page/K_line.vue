@@ -50,7 +50,7 @@ export default {
       getMessage() {
         // 使用 axios 向 flask 发送请求
         var code  = this.code;
-        const url = "http://127.0.0.1:8888/stock/"+code;
+        const url = "/stock/"+code;
         console.log(url);
         axios.get(url).then((res) => {
             var data0 = splitData(res.data);
@@ -279,7 +279,7 @@ export default {
       },
       getVolumes(){
           // 使用 axios 向 flask 发送请求
-          const url = "http://127.0.0.1:8888/stockName/";
+          const url = "/stockName/";
           console.log(url);
           var tplist = [];
           axios.get(url).then((res) => {

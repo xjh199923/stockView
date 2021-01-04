@@ -12,6 +12,15 @@ import 'babel-polyfill';
 
 import echarts from 'echarts'
 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+axios.defaults.baseURL = 'http://127.0.0.1:8888';
+Vue.use(VueAxios, axios)
+
+import qs from 'qs';
+Vue.prototype.$qs = qs
+
+
 
 Vue.config.productionTip = false;
 Vue.use(VueI18n);
@@ -23,6 +32,7 @@ const i18n = new VueI18n({
     messages
 });
 Vue.prototype.$echarts = echarts;
+
 
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {

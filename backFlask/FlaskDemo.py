@@ -1,4 +1,4 @@
-from flask import Flask,jsonify
+from flask import Flask, jsonify, request
 from models import *
 from flask_cors import CORS
 from sqlalchemy import func
@@ -16,12 +16,7 @@ db.init_app(app)
 
 db.create_all()
 
-<<<<<<< HEAD
-
-#返回某一支股票的所有信息
-=======
 # 返回某一支股票的所有信息
->>>>>>> ace1c77054a836f2f433ce0719f0114b90eb1834
 @app.route("/stockInfo/<stockCode>/pageIndex<pageCode>")
 def allInfo(stockCode,pageCode):
     pageCode=int(pageCode)-1
@@ -163,6 +158,12 @@ def VolumeContrast16_17(stockCode):
 # @app.route("/boxplot/")
 # def stockBoxplot():
 #
+
+@app.route('/test', methods=['post'])
+def test():
+    data = request.get_json(silent=True)
+    print(data['aid']) #123
+    return jsonify(data)
 
 
 if __name__ == '__main__':

@@ -38,7 +38,7 @@ export default {
       getMessage() {
         // 使用 axios 向 flask 发送请求
         var code  = this.codeinput;
-        const url = "http://127.0.0.1:8888/stockVolume/"+code;
+        const url = "/stockVolume/"+code;
         console.log(url);
         axios.get(url).then((res) => {
             var colors = ['#5793f3', '#d14a61', '#675bba'];
