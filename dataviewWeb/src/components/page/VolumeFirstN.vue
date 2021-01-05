@@ -27,7 +27,6 @@ export default {
       getMessage() {
         // 使用 axios 向 flask 发送请求
         const url = "/volumeFirstN/5";
-        console.log(url);
         axios.get(url).then((res) => {
                 
                 var tmpNamelist = res.data.firstNnameList;

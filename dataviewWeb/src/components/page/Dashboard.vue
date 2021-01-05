@@ -155,7 +155,6 @@ export default {
         getMessage(id) {
         // 使用 axios 向 flask 发送请求
         const url = "/stockNum/";
-        console.log(url);
         axios.get(url).then((res) => {
             var szNum = res.data.szNum;
             var shNum = res.data.shNum;

@@ -87,9 +87,14 @@ export default {
                     title: '成交量前列'
                 },
                 {
+                    icon: 'el-icon-lx-cascades',
+                    index: 'boxplot',
+                    title: '稳定性分析'
+                },
+                {
                     icon: 'el-icon-lx-global',
-                    index: 'test',
-                    title: '测试'
+                    index: 'predict',
+                    title: '成交额预测分析'
                 }
             ]
         };

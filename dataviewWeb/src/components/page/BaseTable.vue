@@ -186,17 +186,15 @@ export default {
         getData() {
             var code  = this.stockCode;
             // 获取 easy-mock 的模拟数据
-            const url = "http://127.0.0.1:8888/stockInfo/"+code+"/pageIndex"+this.query.pageIndex;
+            const url = "/stockInfo/"+code+"/pageIndex"+this.query.pageIndex;
             axios.get(url).then((res) => {
                 this.tableData = res.data.infoList;
-                console.log(res.data.infoList)
                 this.pageTotal = res.data.infoLen;
             });
         },
         getVolumes(){
           // 使用 axios 向 flask 发送请求/curIdmax
-          const url = "http://127.0.0.1:8888/stockName/";
-          console.log(url);
+          const url = "/stockName/";
           var tplist = [];
           axios.get(url).then((res) => {
               for (var i = 0, len = res.data.nameList.length; i < len; i++) {
@@ -240,7 +238,7 @@ export default {
                 .catch(() => {});
         },
         postToback(){
-            const url = "http://127.0.0.1:8888/test";
+            const url = "/test";
             let params = {aid: this.aid};
             var qs = require('qs');
             axios.post(url,params,{'Content-Type':'application/json'})

@@ -51,7 +51,6 @@ export default {
         // 使用 axios 向 flask 发送请求
         var code  = this.code;
         const url = "/stock/"+code;
-        console.log(url);
         axios.get(url).then((res) => {
             var data0 = splitData(res.data);
             // macd计算
@@ -271,7 +270,6 @@ export default {
             };
             var charts = echarts.init(this.$refs.echartContainer);
             charts.setOption(option);
-            //this.mes = res.data;
           })
           .catch((error) => {
             console.log(error);
@@ -280,7 +278,6 @@ export default {
       getVolumes(){
           // 使用 axios 向 flask 发送请求
           const url = "/stockName/";
-          console.log(url);
           var tplist = [];
           axios.get(url).then((res) => {
               for (var i = 0, len = res.data.nameList.length; i < len; i++) {

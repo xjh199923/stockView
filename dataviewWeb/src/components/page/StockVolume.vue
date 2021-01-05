@@ -39,7 +39,7 @@ export default {
         // 使用 axios 向 flask 发送请求
         var code  = this.codeinput;
         const url = "/stockVolume/"+code;
-        console.log(url);
+
         axios.get(url).then((res) => {
             var colors = ['#5793f3', '#d14a61', '#675bba'];
             var data0 = splitData(res.data);

@@ -49,10 +49,16 @@ export default new Router({
                     meta: { title: '成交量分析', permission: true }
                 },
                 {
+                    // 平均成交量前n支股票稳定性分析
+                    path: '/boxplot',
+                    component: () => import(/* webpackChunkName: "permission" */ '../components/page/Boxplot.vue'),
+                    meta: { title: '稳定性分析', permission: true }
+                },
+                {
                     // 测试
-                    path: '/test',
-                    component: () => import(/* webpackChunkName: "permission" */ '../components/page/Test.vue'),
-                    meta: { title: '测试', permission: true }
+                    path: '/predict',
+                    component: () => import(/* webpackChunkName: "permission" */ '../components/page/Predict.vue'),
+                    meta: { title: '成交额预测分析', permission: true }
                 },
             ]
         },

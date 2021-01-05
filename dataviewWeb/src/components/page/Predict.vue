@@ -4,7 +4,7 @@
             <el-container style="width:100%;">
                     <el-row :gutter="100">
                         <el-col :span="18">
-                            <div id="echart16_17" ref="echart16_17"style="width:1000px; height:580px"></div>
+                            <div id="echartPredict" ref="echartPredict"style="width:1000px; height:580px"></div>
                         </el-col>
                         <el-col :span="6">
                             <el-table
@@ -72,15 +72,13 @@ export default {
       getMessage(id) {
         // 使用 axios 向 flask 发送请求
         var code  = this.codeinput;
-        const url = "/VolumeContrast16_17/"+code;
+        const url = "/predict/"+code;
         axios.get(url).then((res) => {
-            var date_16 = res.data.date_16;
-            var date_17 = res.data.date_17;
-            var volume_16 = res.data.volume_16;
-            var volume_17  = res.data.volume_17;
+            var date = res.data.date;
+            var origin = res.data.origin;
+            var predict  = res.data.predict;
 
-            // var dom = document.getElementById(id);
-            var colors = ['#5793f3', '#d14a61', '#675bba'];
+            var colors = ['#d14a61', '#675bba'];
             var option = {
                 color: colors,
 
@@ -91,7 +89,7 @@ export default {
                     }
                 },
                 legend: {
-                    data:['2016 成交量', '2017 成交量']
+                    data:['成交额', '成交额预测']
                 },
                 grid: {
                     top: 70,
@@ -119,12 +117,12 @@ export default {
                         axisPointer: {
                             label: {
                                 formatter: function (params) {
-                                    return '成交量  ' + params.value
+                                    return '成交额预测  ' + params.value
                                         + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
                                 }
                             }
                         },
-                        data: date_16
+                        data: date
                     },
                     {
                         type: 'category',
@@ -140,19 +138,19 @@ export default {
                         axisPointer: {
                             label: {
                                 formatter: function (params) {
-                                    return '成交量  ' + params.value
+                                    return '成交额  ' + params.value
                                         + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
                                 }
                             }
                         },
-                        data: date_17
+                        data: date
                     }
                 ],
                 yAxis: [
                     {
                         type: 'value',
                         axisLabel: {
-                            formatter: '{value} 元'
+                            formatter: '{value}'
                         }
                     }
                 ],
@@ -172,21 +170,21 @@ export default {
                 }],
                 series: [
                     {
-                        name: '2016 成交量',
+                        name: '成交额',
                         type: 'line',
                         xAxisIndex: 1,
                         smooth: true,
-                        data: volume_16
+                        data: origin
                     },
                     {
-                        name: '2017 成交量',
+                        name: '成交额预测',
                         type: 'line',
                         smooth: true,
-                        data: volume_17
+                        data: predict
                     }
                 ]
             };
-            var charts = echarts.init(this.$refs.echart16_17);
+            var charts = echarts.init(this.$refs.echartPredict);
             if (option && typeof option === "object") {
                 charts.setOption(option, true);
             }

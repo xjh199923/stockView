@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, request
 from models import *
 from flask_cors import CORS
-from sqlalchemy import func
+from pandas import DataFrame
+from predict_dic.predict import *
 
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -155,9 +156,32 @@ def VolumeContrast16_17(stockCode):
     return jsonify(alldata)
 
 #返回深市或者沪市的股票成交量，成交额
-# @app.route("/boxplot/")
-# def stockBoxplot():
-#
+@app.route("/boxplot/<stockType>/")
+def stockBoxplot(stockType):
+    alldata = {}
+    allVolume,allTurnover,stockNamelist =  [],[],[]
+    global stocksql
+    if(stockType == 'sh'):
+        stocksql = db.session.execute("SELECT stockName, AVG(stock.volume) AS allVolume FROM stock WHERE stockNumber LIKE '%sz%'\
+    GROUP BY stockName,stockName ORDER BY allVolume DESC LIMIT 20").fetchall()
+    elif(stockType == 'sz'):
+        stocksql = db.session.execute("SELECT stockName, AVG(stock.volume) AS allVolume FROM stock WHERE stockNumber LIKE '%sh%'\
+            GROUP BY stockName,stockName ORDER BY allVolume DESC LIMIT 20").fetchall()
+    for item in stocksql:
+        stockNamelist.append(item.stockName)
+    for item1 in stockNamelist:
+        stocksql = db.session.execute("SELECT DISTINCT volume,turnover FROM stock\
+        WHERE stockName = '%s' " %item1).fetchall()
+        tmplist1, tmplist2 = [], []
+        for data in stocksql:
+            tmplist1.append(data.volume)
+            tmplist2.append(data.turnover/30)
+        allVolume.append(tmplist1)
+        allTurnover.append(tmplist2)
+    alldata['allVolume'] = allVolume
+    alldata['allTurnover'] = allTurnover
+    alldata['stockNamelist'] = stockNamelist
+    return jsonify(alldata)
 
 @app.route('/test', methods=['post'])
 def test():
@@ -165,6 +189,29 @@ def test():
     print(data['aid']) #123
     return jsonify(data)
 
+#返回深市或者沪市的股票预测模块
+@app.route("/predict/<stockCode>/")
+def predic(stockCode):
+    stockNumFirstN = db.session.execute("SELECT openPrice,closePrice,highestPrice,lowestPrice,\
+        beforeClosePrice,volume,turnover FROM stock WHERE stockNumber = '%s' " %stockCode).fetchall()
+    df = DataFrame(stockNumFirstN)
+    df.columns = ['openPrice', 'closePrice', 'highestPrice', 'lowestPrice', 'beforeClosePrice', 'volume', 'turnover']
+    data = {}
+
+    stocksql = db.session.execute("SELECT transactionDate FROM stock\
+            WHERE stockNumber = '%s' " % stockCode).fetchall()
+    tmplist = []
+    for data1 in stocksql:
+        tmplist.append(data1.transactionDate)
+
+    data['origin'] = predic_stock(df)[0].tolist()
+    data['predict'] = predic_stock(df)[1].tolist()
+    data['date'] = tmplist
+    # plt.plot(data['origin'], label='test')
+    # plt.plot(data['predict'], label='pred')
+    # plt.legend()
+    # plt.show()
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
