@@ -119,11 +119,7 @@ def predic_stock(df):
                     # 预测值
                     y_pred = sess.run(out, feed_dict={X: data_last[:, 0:6]})
                     y_pred = np.squeeze(y_pred)
-                    # # plt.plot(data_last, label='test')
-                    # plt.plot(y_pred, label='pred')
-                    # plt.title("这是第" + str(e) + "次循环的第" + str(i) + "批")
-                    # plt.legend()
-                    # plt.show()
+
     return_data.append(data_last[:, 6])
     print('xjh')
     print(data_last[:, 6])

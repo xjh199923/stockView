@@ -46,7 +46,7 @@ export default new Router({
                     // 平均成交量前n支股票对比图
                     path: '/volumeFirstN',
                     component: () => import(/* webpackChunkName: "permission" */ '../components/page/VolumeFirstN.vue'),
-                    meta: { title: '成交量分析', permission: true }
+                    meta: { title: '成交量前列', permission: true }
                 },
                 {
                     // 平均成交量前n支股票稳定性分析

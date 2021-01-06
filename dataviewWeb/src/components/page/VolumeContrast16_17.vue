@@ -101,6 +101,7 @@ export default {
                     feature: {
                         dataView: {show: true, readOnly: false},
                         restore: {show: true},
+                        magicType: {type: ['line', 'bar', 'stack', 'tiled']},
                         saveAsImage: {show: true}
                     }
                 },

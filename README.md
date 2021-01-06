@@ -38,9 +38,39 @@
 
 ![login](./dataviewWeb/screenshots/login.png)
 
-### 信息展示
+### 系统首页
 
-![table](./dataviewWeb/screenshots/table.png)
+![login](./dataviewWeb/screenshots/homePage.png)
+
+### 股票详细信息展示
+
+![login](./dataviewWeb/screenshots/stockDetails.png)
+
+### 股票K线图展示
+
+![login](./dataviewWeb/screenshots/k_line.png)
+
+### 股票成交量成交额对比展示
+
+![login](./dataviewWeb/screenshots/turnoverVolumeContrast.png)
+
+### 股票成交量16-17年对比分析
+
+![login](./dataviewWeb/screenshots/16——17.png)
+
+### 成交量TOPN展示
+
+![login](./dataviewWeb/screenshots/topN.png)
+
+### 股票平稳性分析
+
+![login](./dataviewWeb/screenshots/stabilityAnalysis.png)
+
+### 神经网络预测结果展示
+
+![login](./dataviewWeb/screenshots/predict.png)
+
+
 
 ## 安装步骤
 
@@ -67,18 +97,50 @@ SQLALCHEMY_DATABASE_URI = "mysql://数据库用户名:password@localhost:3306/st
 Python依赖如下：
 
 ```
+absl-py==0.11.0
+astor==0.8.1
+cached-property==1.5.2
 certifi==2020.12.5
 click==7.1.2
+cycler==0.10.0
 Flask==1.1.2
 Flask-Cors==3.0.9
 Flask-SQLAlchemy==2.4.4
+gast==0.4.0
+grpcio==1.34.0
+h5py==3.1.0
+importlib-metadata==3.3.0
 itsdangerous==1.1.0
 Jinja2==2.11.2
+joblib==1.0.0
+Keras-Applications==1.0.8
+Keras-Preprocessing==1.1.2
+kiwisolver==1.3.1
+Markdown==3.3.3
 MarkupSafe==1.1.1
+matplotlib==3.3.3
+mock==4.0.3
+numpy==1.19.4
+pandas==1.2.0
+Pillow==8.1.0
+protobuf==3.14.0
 PyMySQL==0.10.1
+pyparsing==2.4.7
+python-dateutil==2.8.1
+pytz==2020.5
+scikit-learn==0.24.0
+scipy==1.6.0
 six==1.15.0
+sklearn==0.0
 SQLAlchemy==1.3.22
+tensorboard==1.13.1
+tensorflow==1.13.2
+tensorflow-estimator==1.13.0
+termcolor==1.1.0
+threadpoolctl==2.1.0
+typing-extensions==3.7.4.3
 Werkzeug==1.0.1
+zipp==3.4.0
 ```
 
 可以利用以下命令安装：
